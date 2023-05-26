@@ -1,0 +1,9 @@
+.page {
+  padding-top: min(45px, max(28px, calc(14px + 0.04 * 100%)));
+  padding-bottom: min(60px, max(36px, calc(22px + 0.04 * 100%)));
+  background-color: black;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: white;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,17 @@
+.edit-button {
+  width: 24px;
+  height: 24px;
+  margin-left: 16px;
+  background: url("../../images/icons/edit.svg") no-repeat;
+  background-size: contain;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+}
+
+@media screen and (max-width: 800px) {
+  .edit-button {
+    width: 18px;
+    height: 18px;
+  }
+}
