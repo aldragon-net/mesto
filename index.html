@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,92 +8,98 @@
     <meta name="description" content="Проект «Место»">
     <meta name="keywords" content="путешествия, достопримечательности, фотографии">
     <meta name="author" content="Александр Дракон">
-    <title>Путешествия по России</title>
+    <title>Проект «Место»</title>
     <link rel="stylesheet" href="pages/index.css">
 </head>
+
 <body class="page">
+
   <div class="popup">
     <div class="popup__container">
-      <button class="popup__close"></button>
+      <button class="popup__close" type="button"></button>
       <div class="popup__form-container">
         <form class="form">
           <h2 class="form__heading">Редактировать профиль</h2>
-            <input type="text" class="form__item" placeholder="Имя">
-            <input type="text" class="form__item" placeholder="Род занятий">
-            <button class="form__button">Сохранить</button>
+          <input type="text" class="form__item" id="name" placeholder="Имя">
+          <input type="text" class="form__item" id="job" placeholder="Род занятий">
+          <button class="form__button" type="submit">Сохранить</button>
           </div>
       </div>
     </div>
   </div>
 
   <header class="header">
-    <img class="header__logo" src="images/logo.svg">
+    <img class="header__logo" src="images/logo.svg" alt="Проект Mesto Russia">
   </header>
+  
   <main class="content">
 
-    <section class="profile">
+    <section class="profile" aria-label="Профиль пользователя">
       <img class="profile__avatar"
            src="images/userpics/kusto.jpg"
-           alt="фото профиля пользователя">
+           alt="аватар пользователя">
       <div class="profile__userinfo">
-        <div class="profile__top"><span class="profile__username">Жак-Ив Кусто-Пусто</span>
-         <span class="profile__username"><button class="profile__edit-button"></button></span></div>
-
-        <p class="profile__description">Исследователь океана и прочего разнообразного и удивительного всякого</p>
+        <div class="profile__top">
+          <span class="profile__name">Жак-Ив Кусто</span>
+          <button class="profile__edit-button" type="button"></button>
+        </div>
+        <p class="profile__job">Исследователь океана</p>
       </div>
-      <button class="add-button"></button>
+      <button class="add-button" type="button"></button>
     </section>
 
-    <ul class="places">
+    <ul class="places" aria-label="Список мест">
       <li class="place">
         <img class="place__image" src="images/places/kirill-pershin-1088404-unsplash.jpg" alt="">
         <div class="place__info">
           <p class="place__name">Черкесияfdfdfdfdfd</p>
-          <button class="place__like-icon"></button>
+          <button class="place__like-icon" type="button"></button>
         </div>
       </li>
       <li class="place">
         <img class="place__image" src="images/places/kirill-pershin-1088404-unsplash.jpg" alt="">
         <div class="place__info">
           <p class="place__name">Черкесияfdfdfdfdfd</p>
-          <button class="place__like-icon"></button>
+          <button class="place__like-icon" type="button"></button>
         </div>
       </li>
       <li class="place">
         <img class="place__image" src="images/places/kirill-pershin-1088404-unsplash.jpg" alt="">
         <div class="place__info">
           <p class="place__name">Черкесияfdfdfdfdfd</p>
-          <button class="place__like-icon"></button>
+          <button class="place__like-icon" type="button"></button>
         </div>
       </li>
       <li class="place">
         <img class="place__image" src="images/places/kirill-pershin-1088404-unsplash.jpg" alt="">
         <div class="place__info">
           <p class="place__name">Черкесияfdfdfdfdfd</p>
-          <button class="place__like-icon"></button>
+          <button class="place__like-icon" type="button"></button>
         </div>
       </li>
       <li class="place">
         <img class="place__image" src="images/places/kirill-pershin-1088404-unsplash.jpg" alt="">
         <div class="place__info">
           <p class="place__name">Черкесияfdfdfdfdfd</p>
-          <button class="place__like-icon"></button>
+          <button class="place__like-icon" type="button"></button>
         </div>
       </li>
       <li class="place">
         <img class="place__image" src="images/places/kirill-pershin-1088404-unsplash.jpg" alt="">
         <div class="place__info">
           <p class="place__name">Черкесияfdfdfdfdfd</p>
-          <button class="place__like-icon"></button>
+          <button class="place__like-icon" type="button"></button>
         </div>
       </li>
-
     </ul>
 
   </main>
+
   <footer class="footer">
     <p class="footer__copyright">&copy; 2023 Mesto Russia</p>
   </footer>
-  <script src="scripts/script.js"></script>
+
+  <script type="text/javascript" src="scripts/script.js"></script>
+
 </body>
 </html>
