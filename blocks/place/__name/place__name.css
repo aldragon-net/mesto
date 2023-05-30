@@ -1,0 +1,9 @@
+.place__name {
+    color: black;
+    font-size: 24px;
+    font-weight: 900;
+    margin-right: 22px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
