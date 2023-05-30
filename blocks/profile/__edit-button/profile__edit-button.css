@@ -1,4 +1,5 @@
 .profile__edit-button {
+  display: flex;
   flex-shrink: 0;
   width: 24px;
   height: 24px;
@@ -9,7 +10,6 @@
   cursor: pointer;
   padding: 0;
   border: none;
-  justify-self: baseline;
 }
 
 @media screen and (max-width: 425px) {
