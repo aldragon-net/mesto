@@ -8,3 +8,14 @@
                        "form .";
 
 }
+
+@media screen and (max-width: 600px) {
+  .popup__container {
+    grid-template-columns: 262px 20px;
+    grid-template-rows: 20px 322px;
+    row-gap: 16px;
+    column-gap: 0px;
+    grid-template-areas: ". close-button"
+                         "form form";
+  }
+}

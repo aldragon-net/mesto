@@ -7,7 +7,6 @@ let jobInput = formElement.querySelector('#job');
 
 function togglePopup() {
     popup.classList.toggle('popup_opened');
-    return false
 }
   
 function handleFormSubmit (evt) {

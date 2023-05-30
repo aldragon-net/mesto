@@ -1,8 +1,8 @@
 .profile__job {
   display: inline-block;
-  font-size: 18px;
-  margin: 0;
   max-width: 100%;
+  margin: 0;
+  font-size: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
