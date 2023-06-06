@@ -14,24 +14,10 @@
 
 <body class="page">
 
-  <div class="popup">
-    <div class="popup__container">
-      <button class="popup__close" type="button"></button>
-      <div class="popup__form-container">
-        <form class="form">
-          <h2 class="form__heading">Редактировать профиль</h2>
-          <input type="text" class="form__item" id="name" placeholder="Имя">
-          <input type="text" class="form__item" id="job" placeholder="Род занятий">
-          <button class="form__button" type="submit">Сохранить</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <header class="header">
     <img class="header__logo" src="images/logo.svg" alt="Проект Mesto Russia">
   </header>
-  
+
   <main class="content">
 
     <section class="profile" aria-label="Профиль пользователя">
@@ -40,15 +26,16 @@
            alt="аватар пользователя">
       <div class="profile__userinfo">
         <div class="profile__top">
-          <h2 class="profile__name">Жак-Ив Кусто</h2>
+          <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button class="profile__edit-button" type="button" aria-label="редактировать профиль"></button>
         </div>
         <p class="profile__job">Исследователь океана</p>
       </div>
-      <button class="add-button" type="button" aria-label="добавить место"></button>
+      <button class="profile__add-button" type="button" aria-label="добавить место"></button>
     </section>
 
-    <ul class="places" aria-label="Список мест">
+  <section aria-label="Список мест">
+    <ul class="places">
       <li class="place">
         <img class="place__image" src="images/places/Karachay-Cherkess.jpg" alt="полуразрушенная церковь">
         <div class="place__info">
@@ -64,21 +51,21 @@
         </div>
       </li>
       <li class="place">
-        <img class="place__image" src="images/places/Dombay.jpg" alt="горный пейзаж">
+        <img class="place__image" src="images/places/Dombay.jpg" alt="горный пейзаж Домбая">
         <div class="place__info">
           <h2 class="place__name">Домбай</h2>
           <button class="place__like-icon" type="button" aria-label="лайк"></button>
         </div>
       </li>
       <li class="place">
-        <img class="place__image" src="images/places/Karelia.jpg" alt="">
+        <img class="place__image" src="images/places/Karelia.jpg" alt="люди на пристани на карельском озере">
         <div class="place__info">
           <h2 class="place__name">Карелия</h2>
           <button class="place__like-icon" type="button" aria-label="лайк"></button>
         </div>
       </li>
       <li class="place">
-        <img class="place__image" src="images/places/Kamchatka.jpg" alt="вулкан Камчатки">
+        <img class="place__image" src="images/places/Kamchatka.jpg" alt="вид с моря на камчатский вулкан">
         <div class="place__info">
           <h2 class="place__name">Камчатка</h2>
           <button class="place__like-icon" type="button" aria-label="лайк"></button>
@@ -92,6 +79,7 @@
         </div>
       </li>
     </ul>
+  </section>
 
   </main>
 
@@ -99,7 +87,19 @@
     <p class="footer__copyright">&copy; 2023 Mesto Russia</p>
   </footer>
 
-  <script src="scripts/script.js"></script>
+  <div class="popup">
+    <div class="popup__container">
+      <button class="popup__close" type="button" aria-label="закрыть форму редактирования"></button>
+      <form class="popup__form" name="profile-form">
+        <h2 class="popup__form-heading">Редактировать профиль</h2>
+        <input type="text" class="popup__form-input" id="input-name" name="profile-name" placeholder="Имя">
+        <input type="text" class="popup__form-input" id="input-job" name="profile-job" placeholder="Род занятий">
+        <button class="popup__form-submit" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="scripts/index.js"></script>
 
 </body>
 </html>
