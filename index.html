@@ -45,7 +45,7 @@
     <p class="footer__copyright">&copy; 2023 Mesto Russia</p>
   </footer>
 
-  <template id="place">
+  <template id="template-place">
     <li class="place">
       <img class="place__image" alt="фотография места">
       <div class="place__info">
@@ -56,36 +56,44 @@
     </li>
   </template> 
 
-  <div class="popup" id="profile-popup">
+  <div class="popup" id="popup-profile">
     <div class="popup__container">
       <button class="popup__close" type="button" aria-label="закрыть форму редактирования"></button>
-      <form class="popup__content popup__form" id="profile-form" name="profile-form">
+      <form class="popup__content popup__form" id="form-profile" name="form-profile">
         <h2 class="popup__form-heading">Редактировать профиль</h2>
-        <input type="text" class="popup__form-input" id="input-profile-name" name="profile-name" placeholder="Имя">
-        <input type="text" class="popup__form-input" id="input-profile-job" name="profile-job" placeholder="Род занятий">
+        <input type="text" class="popup__form-input"
+               id="input-profile-name" name="profile-name"
+               placeholder="Имя">
+        <input type="text" class="popup__form-input"
+               id="input-profile-job" name="profile-job"
+               placeholder="Род занятий">
         <button class="popup__form-submit" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
 
-  <div class="popup" id="place-popup">
+  <div class="popup" id="popup-place">
     <div class="popup__container">
       <button class="popup__close" type="button" aria-label="закрыть форму добавления места"></button>
-      <form class="popup__content popup__form" id="place-form" name="place-form">
+      <form class="popup__content popup__form" id="form-place" name="form-place">
         <h2 class="popup__form-heading">Новое место</h2>
-        <input type="text" class="popup__form-input" id="input-place-name" name="place-name" placeholder="Название">
-        <input type="text" class="popup__form-input" id="input-place-photo" name="place-photo" placeholder="Ссылка на картинку">
+        <input type="text" class="popup__form-input" 
+               id="input-place-name" name="place-name"
+               placeholder="Название">
+        <input type="text" class="popup__form-input" 
+               id="input-place-link" name="place-link"
+               placeholder="Ссылка на картинку">
         <button class="popup__form-submit" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
 
-  <div class="popup popup_opaque" id="picture-popup">
+  <div class="popup popup_opaque" id="popup-photo">
     <div class="popup__container">
-      <button class="popup__close" type="button" aria-label="закрыть просмотр фотографии"></button>
+      <button class="popup__close" type="button" aria-label="закрыть просмотр фото"></button>
       <div class="popup__content">
-        <img class="popup__image">
-        <h2 class="popup__image-caption"></h2>
+        <img class="popup__image" src="#" alt="описание фото">
+        <h2 class="popup__image-caption">Подпись к фото</h2>
       </div>
     </div>
   </div>

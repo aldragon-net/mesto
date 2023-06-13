@@ -23,15 +23,32 @@ const initialCards = [
       name: 'Байкал',
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
-  ]; 
+  ];
 
-function toggleLike(evt) {
-    evt.target.classList.toggle('place__like-icon_active');
-}
+const placeTemplate = document.querySelector('#template-place').content;
+const places = document.querySelector('.places');
 
-function deleteCard(evt) {
-    evt.target.closest('.place').remove();
-}
+const profileName = document.querySelector('.profile__name');
+const profileJob = document.querySelector('.profile__job');
+const popupImage = document.querySelector('.popup__image');
+const popupImageCaption = document.querySelector('.popup__image-caption');
+
+const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonAddPlace = document.querySelector('.profile__add-button');
+const buttonsClose = document.querySelectorAll('.popup__close');
+
+const popupProfile = document.querySelector('#popup-profile');
+const popupPlace = document.querySelector('#popup-place');
+const popupPhoto = document.querySelector('#popup-photo');
+
+const formProfile = document.querySelector('#form-profile');
+const inputProfileName = formProfile.querySelector('#input-profile-name');
+const inputProfileJob = formProfile.querySelector('#input-profile-job');
+
+const formPlace = document.querySelector('#form-place');
+const inputPlaceName = formPlace.querySelector('#input-place-name');
+const inputPlaceLink = formPlace.querySelector('#input-place-link');
+
 
 function addCard (card) {
     const placeElement = placeTemplate.querySelector('.place').cloneNode(true);
@@ -48,30 +65,14 @@ function addInitialCards (initialCards) {
     initialCards.forEach(card => {addCard(card)});
 };
 
+function deleteCard(evt) {
+  evt.target.closest('.place').remove();
+}
 
-const placeTemplate = document.querySelector('#place').content;
-const places = document.querySelector('.places');
-addInitialCards(initialCards);
 
-let editProfileButton = document.querySelector('.profile__edit-button');
-let addPlaceButton = document.querySelector('.profile__add-button');
-let profileName = document.querySelector('.profile__name');
-let profileJob = document.querySelector('.profile__job');
-
-let popupImage = document.querySelector('.popup__image');
-let popupImageCaption = document.querySelector('.popup__image-caption');
-
-let profilePopup = document.querySelector('#profile-popup');
-let placePopup = document.querySelector('#place-popup');
-let picturePopup = document.querySelector('#picture-popup');
-let closeButtons = document.querySelectorAll('.popup__close');
-let profileForm = document.querySelector('#profile-form');
-let profileNameInput = profileForm.querySelector('#input-profile-name');
-let profileJobInput = profileForm.querySelector('#input-profile-job');
-
-let placeForm = document.querySelector('#place-form');
-let placeNameInput = placeForm.querySelector('#input-place-name');
-let placePhotoInput = placeForm.querySelector('#input-place-photo');
+function toggleLike(evt) {
+  evt.target.classList.toggle('place__like-icon_active');
+}
 
 
 function togglePopup(popup) {
@@ -79,23 +80,24 @@ function togglePopup(popup) {
 }
 
 function openProfileForm() {
-    profileNameInput.value = profileName.textContent;
-    profileJobInput.value = profileJob.textContent;
-    togglePopup(profilePopup);
+    inputProfileName.value = profileName.textContent;
+    inputProfileJob.value = profileJob.textContent;
+    togglePopup(popupProfile);
 }
 
 function openPlaceForm() {
-  placeNameInput.value = '';
-  placePhotoInput.value = '';
-  togglePopup(placePopup);
+  inputPlaceName.value = '';
+  inputPlaceLink.value = '';
+  togglePopup(popupPlace);
 }
 
 function openImage(evt) {
   image = evt.target;
   caption = image.parentElement.querySelector('.place__info .place__name').textContent;
-  popupImage.src = image.src;
+  popupImage.setAttribute('src', image.src);
+  popupImage.setAttribute('alt', caption)
   popupImageCaption.textContent = caption;
-  togglePopup(picturePopup)
+  togglePopup(popupPhoto)
 }
 
 function closeForm(evt) {
@@ -105,25 +107,25 @@ function closeForm(evt) {
 
 function handleProfileFormSubmit (evt) {
     evt.preventDefault();
-    let name = profileNameInput.value;
-    let job = profileJobInput.value;
-    profileName.textContent = name;
-    profileJob.textContent = job;
-    togglePopup(profilePopup);
+    profileName.textContent = inputProfileName.value;
+    profileJob.textContent = inputProfileJob.value;
+    togglePopup(popupProfile);
 }
 
 function handlePlaceFormSubmit (evt) {
   evt.preventDefault();
-  let newCard = {};
-  newCard.name = placeNameInput.value;
-  newCard.link = placePhotoInput.value;
+  const newCard = {
+    name: inputPlaceName.value,
+    link: inputPlaceLink.value
+  };
   addCard(newCard);
-  togglePopup(placePopup);
+  togglePopup(popupPlace);
 }
 
-editProfileButton.addEventListener('click', openProfileForm);
-addPlaceButton.addEventListener('click', openPlaceForm);
+buttonEditProfile.addEventListener('click', openProfileForm);
+buttonAddPlace.addEventListener('click', openPlaceForm);
+buttonsClose.forEach(elem => elem.addEventListener('click', closeForm));
+formProfile.addEventListener('submit', handleProfileFormSubmit);
+formPlace.addEventListener('submit', handlePlaceFormSubmit);
 
-closeButtons.forEach(elem => elem.addEventListener('click', closeForm));
-profileForm.addEventListener('submit', handleProfileFormSubmit);
-placeForm.addEventListener('submit', handlePlaceFormSubmit);
+addInitialCards(initialCards);

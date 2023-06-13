@@ -9,9 +9,6 @@
 
 }
 
-/* grid-template-columns: 430px 32px;
-grid-template-rows: 32px 330px; */
-
 @media screen and (max-width: 600px) {
   .popup__container {
     grid-template-columns: 1fr 20px;
@@ -22,6 +19,3 @@ grid-template-rows: 32px 330px; */
                          "content content";
   }
 }
-
-/* grid-template-columns: 262px 20px;
-grid-template-rows: 20px 322px; */
