@@ -36,48 +36,6 @@
 
   <section aria-label="Список мест">
     <ul class="places">
-      <li class="place">
-        <img class="place__image" src="images/places/Karachay-Cherkess.jpg" alt="полуразрушенная церковь">
-        <div class="place__info">
-          <h2 class="place__name">Карачаево-Черкессия</h2>
-          <button class="place__like-icon" type="button" aria-label="лайк"></button>
-        </div>
-      </li>
-      <li class="place">
-        <img class="place__image" src="images/places/Elbrus.jpg" alt="пейзаж с вершиной Эльбруса на горизонте">
-        <div class="place__info">
-          <h2 class="place__name">Гора Эльбрус</h2>
-          <button class="place__like-icon place__like-icon_active" type="button" aria-label="лайк"></button>
-        </div>
-      </li>
-      <li class="place">
-        <img class="place__image" src="images/places/Dombay.jpg" alt="горный пейзаж Домбая">
-        <div class="place__info">
-          <h2 class="place__name">Домбай</h2>
-          <button class="place__like-icon" type="button" aria-label="лайк"></button>
-        </div>
-      </li>
-      <li class="place">
-        <img class="place__image" src="images/places/Karelia.jpg" alt="люди на пристани на карельском озере">
-        <div class="place__info">
-          <h2 class="place__name">Карелия</h2>
-          <button class="place__like-icon" type="button" aria-label="лайк"></button>
-        </div>
-      </li>
-      <li class="place">
-        <img class="place__image" src="images/places/Kamchatka.jpg" alt="вид с моря на камчатский вулкан">
-        <div class="place__info">
-          <h2 class="place__name">Камчатка</h2>
-          <button class="place__like-icon" type="button" aria-label="лайк"></button>
-        </div>
-      </li>
-      <li class="place">
-        <img class="place__image" src="images/places/Baikal.jpg" alt="автомобиль на льду Байкала">
-        <div class="place__info">
-          <h2 class="place__name">Зимний Байкал</h2>
-          <button class="place__like-icon" type="button" aria-label="лайк"></button>
-        </div>
-      </li>
     </ul>
   </section>
 
@@ -87,15 +45,56 @@
     <p class="footer__copyright">&copy; 2023 Mesto Russia</p>
   </footer>
 
-  <div class="popup">
+  <template id="template-place">
+    <li class="place">
+      <img class="place__image" alt="фотография места">
+      <div class="place__info">
+        <h2 class="place__name"></h2>
+        <button class="place__like-icon" type="button" aria-label="лайк"></button>
+      </div>
+      <button class="place__delete-icon" type="button" aria-label="удалить"></button>
+    </li>
+  </template> 
+
+  <div class="popup" id="popup-profile">
     <div class="popup__container">
       <button class="popup__close" type="button" aria-label="закрыть форму редактирования"></button>
-      <form class="popup__form" name="profile-form">
+      <form class="popup__content popup__form" id="form-profile" name="form-profile">
         <h2 class="popup__form-heading">Редактировать профиль</h2>
-        <input type="text" class="popup__form-input" id="input-name" name="profile-name" placeholder="Имя">
-        <input type="text" class="popup__form-input" id="input-job" name="profile-job" placeholder="Род занятий">
+        <input type="text" class="popup__form-input"
+               id="input-profile-name" name="profile-name"
+               placeholder="Имя">
+        <input type="text" class="popup__form-input"
+               id="input-profile-job" name="profile-job"
+               placeholder="Род занятий">
         <button class="popup__form-submit" type="submit">Сохранить</button>
       </form>
+    </div>
+  </div>
+
+  <div class="popup" id="popup-place">
+    <div class="popup__container">
+      <button class="popup__close" type="button" aria-label="закрыть форму добавления места"></button>
+      <form class="popup__content popup__form" id="form-place" name="form-place">
+        <h2 class="popup__form-heading">Новое место</h2>
+        <input type="text" class="popup__form-input" 
+               id="input-place-name" name="place-name"
+               placeholder="Название">
+        <input type="text" class="popup__form-input" 
+               id="input-place-link" name="place-link"
+               placeholder="Ссылка на картинку">
+        <button class="popup__form-submit" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup popup_opaque" id="popup-photo">
+    <div class="popup__container">
+      <button class="popup__close" type="button" aria-label="закрыть просмотр фото"></button>
+      <div class="popup__content">
+        <img class="popup__image" src="#" alt="описание фото">
+        <h2 class="popup__image-caption">Подпись к фото</h2>
+      </div>
     </div>
   </div>
 
