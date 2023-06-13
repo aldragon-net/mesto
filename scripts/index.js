@@ -95,7 +95,7 @@ function openImage(evt) {
   image = evt.target;
   caption = image.parentElement.querySelector('.place__info .place__name').textContent;
   popupImage.setAttribute('src', image.src);
-  popupImage.setAttribute('alt', caption)
+  popupImage.setAttribute('alt', caption);
   popupImageCaption.textContent = caption;
   togglePopup(popupPhoto)
 }
