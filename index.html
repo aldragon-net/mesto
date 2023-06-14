@@ -54,41 +54,41 @@
       </div>
       <button class="place__delete-icon" type="button" aria-label="удалить"></button>
     </li>
-  </template> 
+  </template>
 
-  <div class="popup" id="popup-profile">
+  <div class="popup" id="profile-popup">
     <div class="popup__container">
       <button class="popup__close" type="button" aria-label="закрыть форму редактирования"></button>
-      <form class="popup__content popup__form" id="form-profile" name="form-profile">
+      <form class="popup__content popup__form" id="profile-form" name="profile-form">
         <h2 class="popup__form-heading">Редактировать профиль</h2>
         <input type="text" class="popup__form-input"
-               id="input-profile-name" name="profile-name"
+               id="profile-name-input" name="profile-name"
                placeholder="Имя">
         <input type="text" class="popup__form-input"
-               id="input-profile-job" name="profile-job"
+               id="profile-job-input" name="profile-job"
                placeholder="Род занятий">
         <button class="popup__form-submit" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
 
-  <div class="popup" id="popup-place">
+  <div class="popup" id="place-popup">
     <div class="popup__container">
       <button class="popup__close" type="button" aria-label="закрыть форму добавления места"></button>
-      <form class="popup__content popup__form" id="form-place" name="form-place">
+      <form class="popup__content popup__form" id="place-form" name="place-form">
         <h2 class="popup__form-heading">Новое место</h2>
-        <input type="text" class="popup__form-input" 
-               id="input-place-name" name="place-name"
+        <input type="text" class="popup__form-input"
+               id="place-name-input" name="place-name"
                placeholder="Название">
-        <input type="text" class="popup__form-input" 
-               id="input-place-link" name="place-link"
+        <input type="text" class="popup__form-input"
+               id="place-link-input" name="place-link"
                placeholder="Ссылка на картинку">
         <button class="popup__form-submit" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
 
-  <div class="popup popup_opaque" id="popup-photo">
+  <div class="popup popup_opaque" id="photo-popup">
     <div class="popup__container">
       <button class="popup__close" type="button" aria-label="закрыть просмотр фото"></button>
       <div class="popup__content">
