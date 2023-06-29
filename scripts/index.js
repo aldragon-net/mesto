@@ -40,7 +40,7 @@ const closeButtons = document.querySelectorAll('.popup__close');
 const profilePopup = document.querySelector('#profile-popup');
 const placePopup = document.querySelector('#place-popup');
 const photoPopup = document.querySelector('#photo-popup');
-const popups = [profilePopup, placePopup, photoPopup];
+const popupList = [profilePopup, placePopup, photoPopup];
 
 const profileForm = document.forms['profile-form'];
 const profileNameInput = profileForm.querySelector('#profile-name-input');
@@ -143,7 +143,7 @@ closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => closePopup(popup));
 });
-popups.forEach((popup) => {
+popupList.forEach((popup) => {
   popup.addEventListener('click', handleOverlayClick)
 });
 profileForm.addEventListener('submit', handleProfileFormSubmit);
