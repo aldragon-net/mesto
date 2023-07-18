@@ -1,3 +1,7 @@
+import Card from './card.js';
+import FormValidator from './FormValidator.js';
+
+
 const initialCards = [
     {
       name: 'Архыз',
@@ -25,7 +29,15 @@ const initialCards = [
     }
   ];
 
-const placeTemplate = document.querySelector('#template-place').content;
+const validationSettings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__form-input',
+  submitButtonSelector: '.popup__form-submit',
+  inactiveButtonClass: 'popup__form-submit_inactive',
+  inputErrorClass: 'popup__form-input_type_error',
+  errorClass: 'popup__form-error_visible'
+}
+
 const places = document.querySelector('.places');
 
 const profileName = document.querySelector('.profile__name');
@@ -45,56 +57,15 @@ const popupList = [profilePopup, placePopup, photoPopup];
 const profileForm = document.forms['profile-form'];
 const profileNameInput = profileForm.querySelector('#profile-name-input');
 const profileJobInput = profileForm.querySelector('#profile-job-input');
+const profileFormValidator = new FormValidator(profileForm, validationSettings);
+profileFormValidator.enableValidation();
 
 const placeForm = document.forms['place-form'];
 const placeNameInput = placeForm.querySelector('#place-name-input');
 const placeLinkInput = placeForm.querySelector('#place-link-input');
+const placeFormValidator = new FormValidator(placeForm, validationSettings);
+placeFormValidator.enableValidation();
 
-
-function handleOverlayClick (evt) {
-  if (evt.target.classList.contains('popup')) {
-    closePopup(evt.target);
-  }
-  if (evt.target.classList.contains('popup__container')) {
-    closePopup(evt.target.parentElement);
-  }
-}
-
-function toggleLike (evt) {
-  evt.target.classList.toggle('place__like-icon_active');
-}
-
-function deleteCard (evt) {
-  evt.target.closest('.place').remove();
-}
-
-function createCard (card) {
-  const cardElement = placeTemplate.querySelector('.place').cloneNode(true);
-  cardElement.querySelector('.place__name').textContent = card.name;
-  const cardImage = cardElement.querySelector('.place__image');
-  cardImage.setAttribute('src', card.link);
-  cardImage.setAttribute('alt', `фотография места «${card.name}»`);
-  cardImage.addEventListener('click', () => openImage(card.link, card.name));
-  cardElement.querySelector('.place__like-icon').addEventListener('click', toggleLike);
-  cardElement.querySelector('.place__delete-icon').addEventListener('click', deleteCard);
-  return cardElement
-}
-
-function addCard (card) {
-  const cardElement = createCard(card);
-  places.prepend(cardElement);
-}
-
-function addInitialCards (initialCards) {
-  initialCards.forEach(addCard);
-};
-
-function handleEsc (evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-  }
-}
 
 function openPopup (popup) {
   popup.classList.add('popup_opened');
@@ -106,17 +77,33 @@ function closePopup (popup) {
   popup.classList.remove('popup_opened');
 }
 
+function openImage (link, caption) {
+  popupImage.setAttribute('src', link);
+  popupImage.setAttribute('alt', `фотография места «${caption}»`);
+  popupImageCaption.textContent = caption;
+  openPopup(photoPopup)
+}
+
 function openProfileForm () {
   profileNameInput.value = profileName.textContent;
   profileJobInput.value = profileJob.textContent;
   openPopup(profilePopup);
 }
 
-function openImage (link, caption) {
-  popupImage.setAttribute('src', link);
-  popupImage.setAttribute('alt', `фотография места «${caption}»`);
-  popupImageCaption.textContent = caption;
-  openPopup(photoPopup)
+function handleOverlayClick (evt) {
+  if (evt.target.classList.contains('popup')) {
+    closePopup(evt.target);
+  }
+  if (evt.target.classList.contains('popup__container')) {
+    closePopup(evt.target.closest('.popup'));
+  }
+}
+
+function handleEsc (evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
 }
 
 function handleProfileFormSubmit (evt) {
@@ -137,8 +124,23 @@ function handlePlaceFormSubmit (evt) {
   evt.target.reset()
 }
 
+function addCard (cardData) {
+  const card = new Card(cardData, '#template-place', openImage);
+  const cardElement = card.generateCard();
+  places.prepend(cardElement);
+}
+
+function addInitialCards (initialCards) {
+  initialCards.forEach(addCard);
+};
+
+
 editProfileButton.addEventListener('click', openProfileForm);
+profileForm.addEventListener('submit', handleProfileFormSubmit);
+
 addPlaceButton.addEventListener('click', () => openPopup(placePopup));
+placeForm.addEventListener('submit', handlePlaceFormSubmit);
+
 closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => closePopup(popup));
@@ -146,7 +148,5 @@ closeButtons.forEach((button) => {
 popupList.forEach((popup) => {
   popup.addEventListener('click', handleOverlayClick)
 });
-profileForm.addEventListener('submit', handleProfileFormSubmit);
-placeForm.addEventListener('submit', handlePlaceFormSubmit);
 
 addInitialCards(initialCards);
