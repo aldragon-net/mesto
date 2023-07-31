@@ -2,8 +2,10 @@ import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import FormValidator from '../components/FormValidator.js';
 
 import { initialCards,
+         validationSettings,
          profileNameInput,
          profileJobInput,
          addPlaceButton,
@@ -16,22 +18,28 @@ import './index.css';
 const photoPopup = new PopupWithImage('#photo-popup');
 photoPopup.setEventListeners();
 
-const cardSection = new Section({
-    items: initialCards,
-    renderer: getCardCreator(photoPopup.open.bind(photoPopup))
-  },
-  '.places'
-);
+const createCard = getCardCreator(photoPopup.open.bind(photoPopup));
+
+const cardSection = new Section({ items: initialCards, renderer: createCard }, '.places');
+cardSection.renderItems();
 
 const userInfo = new UserInfo({ nameSelector: '.profile__name', jobSelector: '.profile__job' });
 
-const profilePopup = new PopupWithForm('#profile-popup',
-                                       (inputValues) => {userInfo.setUserInfo(inputValues)}
-                                       );
+const profilePopup = new PopupWithForm(
+  '#profile-popup',
+  (values) => {userInfo.setUserInfo(values)}
+);
 profilePopup.setEventListeners();
+const profileFormValidator = new FormValidator(profilePopup.form, validationSettings);
+profileFormValidator.enableValidation();
 
-const placePopup = new PopupWithForm('#place-popup', (newCard) => {cardSection.addItem(newCard)});
+const placePopup = new PopupWithForm(
+  '#place-popup',
+  (newCard) => {cardSection.addItem(createCard(newCard))}
+);
 placePopup.setEventListeners();
+const placeFormValidator = new FormValidator(placePopup.form, validationSettings);
+placeFormValidator.enableValidation();
 
 const handleEditProfileButtonClick = () => {
   const data = userInfo.getUserInfo();
