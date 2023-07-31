@@ -9,18 +9,19 @@ import { initialCards,
          addPlaceButton,
          editProfileButton } from '../utils/constants.js';
 
-import { createCardRenderer } from '../utils/utils.js';
+import { getCardCreator } from '../utils/utils.js';
 
 import './index.css';
 
 const photoPopup = new PopupWithImage('#photo-popup');
 photoPopup.setEventListeners();
 
-const places = new Section({items: initialCards,
-                            renderer: createCardRenderer(photoPopup.open.bind(photoPopup))
-                            },
-                           '.places'
-                           );
+const cardSection = new Section({
+    items: initialCards,
+    renderer: getCardCreator(photoPopup.open.bind(photoPopup))
+  },
+  '.places'
+);
 
 const userInfo = new UserInfo({ nameSelector: '.profile__name', jobSelector: '.profile__job' });
 
@@ -29,14 +30,16 @@ const profilePopup = new PopupWithForm('#profile-popup',
                                        );
 profilePopup.setEventListeners();
 
-const placePopup = new PopupWithForm('#place-popup', (newCard) => {places.addItem(newCard)});
+const placePopup = new PopupWithForm('#place-popup', (newCard) => {cardSection.addItem(newCard)});
 placePopup.setEventListeners();
 
-editProfileButton.addEventListener('click', () => {
+const handleEditProfileButtonClick = () => {
   const data = userInfo.getUserInfo();
   profileNameInput.value = data.name;
   profileJobInput.value = data.job;
   profilePopup.open();
-});
+}
+
+editProfileButton.addEventListener('click', handleEditProfileButtonClick);
 
 addPlaceButton.addEventListener('click', placePopup.open.bind(placePopup));
