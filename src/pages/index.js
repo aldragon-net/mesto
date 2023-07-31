@@ -11,6 +11,8 @@ import { initialCards,
 
 import { createCardRenderer } from '../utils/utils.js';
 
+import './index.css';
+
 const photoPopup = new PopupWithImage('#photo-popup');
 photoPopup.setEventListeners();
 

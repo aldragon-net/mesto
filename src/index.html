@@ -10,20 +10,19 @@
     <meta name="author" content="Александр Дракон">
     <title>Проект «Место»</title>
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
-    <link rel="stylesheet" href="pages/index.css">
 </head>
 
 <body class="page">
 
   <header class="header">
-    <img class="header__logo" src="images/logo.svg" alt="Проект Mesto Russia">
+    <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Проект Mesto Russia">
   </header>
 
   <main class="content">
 
     <section class="profile" aria-label="Профиль пользователя">
       <img class="profile__avatar"
-           src="images/avatars/kusto.jpg"
+           src="<%=require('./images/avatars/kusto.jpg')%>"
            alt="аватар пользователя">
       <div class="profile__userinfo">
         <div class="profile__top">
@@ -102,8 +101,6 @@
       </div>
     </div>
   </div>
-
-  <script type="module" src="pages/index.js"></script>
 
 </body>
 </html>
