@@ -20,7 +20,15 @@ photoPopup.setEventListeners();
 
 const createCard = getCardCreator(photoPopup.open.bind(photoPopup));
 
-const cardSection = new Section({ items: initialCards, renderer: createCard }, '.places');
+const cardSection = new Section({
+    items: initialCards,
+    renderer: (item) => {
+      const card = createCard(item);
+      cardSection.addItem(card);
+    },
+  },
+  '.places'
+);
 cardSection.renderItems();
 
 const userInfo = new UserInfo({ nameSelector: '.profile__name', jobSelector: '.profile__job' });
