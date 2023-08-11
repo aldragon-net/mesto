@@ -29,7 +29,7 @@
           <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button class="profile__edit-button" type="button" aria-label="редактировать профиль"></button>
         </div>
-        <p class="profile__job">Исследователь океана</p>
+        <p class="profile__about">Исследователь океана</p>
       </div>
       <button class="profile__add-button" type="button" aria-label="добавить место"></button>
     </section>
@@ -50,7 +50,10 @@
       <img class="place__image" alt="фотография места">
       <div class="place__info">
         <h2 class="place__name"></h2>
-        <button class="place__like-icon" type="button" aria-label="лайк"></button>
+        <div class="place__like-container">
+          <button class="place__like-icon" type="button" aria-label="лайк"></button>
+          <p class="place__like-counter">0</p>
+        </div>
       </div>
       <button class="place__delete-icon" type="button" aria-label="удалить"></button>
     </li>
@@ -66,9 +69,9 @@
                placeholder="Имя" minlength="2" maxlength="20" required>
         <p class="profile-name-input-error popup__form-error"></p>
         <input type="text" class="popup__form-input"
-               id="profile-job-input" name="job"
+               id="profile-about-input" name="about"
                placeholder="Род занятий" minlength="2" maxlength="200" required>
-        <p class="profile-job-input-error popup__form-error"></p>
+        <p class="profile-about-input-error popup__form-error"></p>
         <button class="popup__form-submit" type="submit">Сохранить</button>
       </form>
     </div>
@@ -88,6 +91,16 @@
                placeholder="Ссылка на картинку" required>
         <p class="place-link-input-error popup__form-error"></p>
         <button class="popup__form-submit" type="submit">Создать</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup" id="confirmation-popup">
+    <div class="popup__container">
+      <button class="popup__close" type="button" aria-label="подтвердить удаление карточки"></button>
+      <form class="popup__content popup__form" id="confirmation-form" name="confirmation-form" novalidate>
+        <h2 class="popup__form-heading">Вы уверены?</h2>
+        <button class="popup__form-submit" type="submit">Да</button>
       </form>
     </div>
   </div>
