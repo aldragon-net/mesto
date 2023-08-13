@@ -15,3 +15,4 @@ export const placeForm = document.forms['place-form'];
 
 export const addPlaceButton = document.querySelector('.profile__add-button');
 export const editProfileButton = document.querySelector('.profile__edit-button');
+export const changeAvatarButon = document.querySelector('.profile__avatar-button');
