@@ -10,7 +10,7 @@ export const validationSettings = {
 export const profileForm = document.forms['profile-form'];
 export const profileNameInput = profileForm.querySelector('#profile-name-input');
 export const profileAboutInput = profileForm.querySelector('#profile-about-input');
-
+export const avatarLinkInput = document.forms['avatar-form'].querySelector('#avatar-link-input');
 export const placeForm = document.forms['place-form'];
 
 export const addPlaceButton = document.querySelector('.profile__add-button');

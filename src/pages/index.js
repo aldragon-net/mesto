@@ -9,6 +9,7 @@ import FormValidator from '../components/FormValidator.js';
 import { validationSettings,
          profileNameInput,
          profileAboutInput,
+         avatarLinkInput,
          addPlaceButton,
          editProfileButton,
          changeAvatarButon } from '../utils/constants.js';
@@ -38,11 +39,11 @@ function confirmDelete(confirmationPopup) {
   })
 }
 
-function handleCardDelete(card_id, element) {
+function handleCardDelete(cardId, element) {
   confirmDelete(confirmationPopup)
     .then(() => {
       confirmationPopup.button.textContent = "Удаляется…"
-      return api.deleteCard(card_id)
+      return api.deleteCard(cardId)
     })
     .then(() => {
       element.remove();
@@ -52,8 +53,8 @@ function handleCardDelete(card_id, element) {
     .catch((err) => {console.log(`Карточка не удалена: ${err}`)})
 }
 
-function handleCardLike(card_id, liked) {
-  return !liked ? api.likeCard(card_id) : api.unlikeCard(card_id)
+function handleCardLike(cardId, liked) {
+  return !liked ? api.likeCard(cardId) : api.unlikeCard(cardId)
   }
 
 const createCard = getCardCreator(photoPopup.open.bind(photoPopup), handleCardDelete, handleCardLike);
@@ -61,14 +62,14 @@ const createCard = getCardCreator(photoPopup.open.bind(photoPopup), handleCardDe
 const cardSection = new Section({
     renderer: (item, user) => {
       const card = createCard(item, user);
-      cardSection.addItem(card);
+      cardSection.appendItem(card);
     }
   },
   '.places'
 );
 
 const userInfo = new UserInfo(
-  { 
+  {
     nameSelector: '.profile__name',
     aboutSelector: '.profile__about',
     avatarSelector: '.profile__avatar'
@@ -83,10 +84,10 @@ api.getProfileInfo()
   })
   .then(userData => {
     api.getInitialCards()
-    .then(cards => {
-      cardSection.renderItems(cards.slice().reverse(), userData)
-    })
-    .catch((err) => {console.log(`Не удалось загрузить карточки: ${err}`)})
+      .then(cards => {
+        cardSection.renderItems(cards, userData)
+      })
+      .catch((err) => {console.log(`Не удалось загрузить карточки: ${err}`)})
   })
   .catch((err) => {console.log(`Не удалось получить данные профиля: ${err}`)});
 
@@ -98,9 +99,11 @@ const profilePopup = new PopupWithForm(
       .then(values => {
         userInfo.setUserInfo(values);
         profilePopup.close();
-        profilePopup.button.textContent = 'Сохранить'
       })
-      .catch((err) => {console.log(`Не удалось обновить профиль: ${err}`)});
+      .catch((err) => {console.log(`Не удалось обновить профиль: ${err}`)})
+      .finally(() =>
+        profilePopup.button.textContent = 'Сохранить'
+      );
     }
 );
 profilePopup.setEventListeners();
@@ -115,9 +118,11 @@ const avatarPopup = new PopupWithForm(
       .then(values => {
         userInfo.setAvatar(values);
         avatarPopup.close();
-        avatarPopup.button.textContent = 'Сохранить'
       })
-      .catch((err) => {console.log(`Не удалось обновить аватар: ${err}`)});
+      .catch((err) => {console.log(`Не удалось обновить аватар: ${err}`)})
+      .finally(() => {
+        avatarPopup.button.textContent = 'Сохранить'
+      });
   });
 avatarPopup.setEventListeners();
 const avatarFormValidator = new FormValidator(avatarPopup.form, validationSettings);
@@ -129,9 +134,13 @@ const placePopup = new PopupWithForm(
     placePopup.button.textContent = 'Создание карточки…'
     api.createCard(cardData)
       .then(cardData => {
-        cardSection.addItem(createCard(cardData, cardData.owner))
+        cardSection.prependItem(createCard(cardData, cardData.owner));
+        placePopup.close()
       })
-      .catch((err) => {console.log(`Не удалось создать карточку: ${err}`)});
+      .catch((err) => {console.log(`Не удалось создать карточку: ${err}`)})
+      .finally(() => {
+        placePopup.button.textContent = 'Создать'
+      });;
   }
 );
 placePopup.setEventListeners();
@@ -145,8 +154,12 @@ const handleEditProfileButtonClick = () => {
   profilePopup.open();
 }
 
+const handleEditAvatarButtonClick = () => {
+  const data = userInfo.getUserInfo();
+  avatarLinkInput.value = data.avatar;
+  avatarPopup.open()
+}
+
 editProfileButton.addEventListener('click', handleEditProfileButtonClick);
-
+changeAvatarButon.addEventListener('click', handleEditAvatarButtonClick);
 addPlaceButton.addEventListener('click', placePopup.open.bind(placePopup));
-
-changeAvatarButon.addEventListener('click', avatarPopup.open.bind(avatarPopup));

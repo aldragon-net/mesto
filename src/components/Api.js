@@ -2,7 +2,7 @@ export default class Api {
   constructor ( {baseUrl, endpoints, headers} ) {
     this._baseUrl = baseUrl;
     this._authorization = headers.authorization;
-    this._content_type = headers['Content-Type'];
+    this._contentType = headers['Content-Type'];
     this._profileEndpoint = this._baseUrl + endpoints.profile;
     this._cardsEndpoint = this._baseUrl + endpoints.cards;
     this._avatarEndpoint = this._baseUrl + endpoints.avatar;
@@ -25,7 +25,7 @@ export default class Api {
     return this._getResponseOrError(
       this._profileEndpoint,
       {
-        method: 'GET', 
+        method: 'GET',
         headers: {authorization: this._authorization}
       }
     )
@@ -38,7 +38,7 @@ export default class Api {
         method: 'PATCH',
         headers: {
           authorization: this._authorization,
-          'Content-Type': this._content_type
+          'Content-Type': this._contentType
         },
         body: JSON.stringify({name: name, about: about})
       }
@@ -52,7 +52,7 @@ export default class Api {
         method: 'PATCH',
         headers: {
           authorization: this._authorization,
-          'Content-Type': this._content_type
+          'Content-Type': this._contentType
         },
         body: JSON.stringify({avatar: link})
       }
@@ -63,7 +63,7 @@ export default class Api {
     return this._getResponseOrError(
       this._cardsEndpoint,
       {
-        method: 'GET', 
+        method: 'GET',
         headers: {authorization: this._authorization}
       }
     )
@@ -76,7 +76,7 @@ export default class Api {
         method: 'POST',
         headers: {
           authorization: this._authorization,
-          'Content-Type': this._content_type
+          'Content-Type': this._contentType
         },
         body: JSON.stringify({name: name, link: link})
       }
