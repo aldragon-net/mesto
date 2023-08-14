@@ -4,8 +4,12 @@ export default class Section {
     this._renderItem = renderer;
   };
 
-  addItem (itemElement) {
+  prependItem (itemElement) {
     this._container.prepend(itemElement);
+  }
+
+  appendItem (itemElement) {
+    this._container.append(itemElement);
   }
 
   renderItems (items, user) {

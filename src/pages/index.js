@@ -9,6 +9,7 @@ import FormValidator from '../components/FormValidator.js';
 import { validationSettings,
          profileNameInput,
          profileAboutInput,
+         avatarLinkInput,
          addPlaceButton,
          editProfileButton,
          changeAvatarButon } from '../utils/constants.js';
@@ -27,80 +28,95 @@ photoPopup.setEventListeners();
 const confirmationPopup = new PopupWithConfirmation('#confirmation-popup');
 confirmationPopup.setEventListeners();
 
-function confirmDelete(confirmationPopup) {
-  confirmationPopup.button.textContent = "Да"
-  confirmationPopup.open()
-  return new Promise((resolve, reject) => {
-    confirmationPopup.setResolvers(
-      () => {resolve('Confirmed')},
-      () => {reject('Not confrimed')}
-    )
-  })
-}
-
-function handleCardDelete(card_id, element) {
-  confirmDelete(confirmationPopup)
+const handleCardDelete = (card) => {
+  confirmationPopup.setButtonText('Удаление…');
+  api.deleteCard(card.getId())
     .then(() => {
-      confirmationPopup.button.textContent = "Удаляется…"
-      return api.deleteCard(card_id)
-    })
-    .then(() => {
-      element.remove();
-      element = null;
       confirmationPopup.close();
+      card.deleteCard();
     })
     .catch((err) => {console.log(`Карточка не удалена: ${err}`)})
+    .finally(() => {
+      confirmationPopup.setButtonText('Да');
+    })
 }
 
-function handleCardLike(card_id, liked) {
-  return !liked ? api.likeCard(card_id) : api.unlikeCard(card_id)
-  }
+const handleCardDeleteConfirmation = (card) => {
+  confirmationPopup.setCallback(() => handleCardDelete(card));
+  confirmationPopup.open();
+}
 
-const createCard = getCardCreator(photoPopup.open.bind(photoPopup), handleCardDelete, handleCardLike);
+function handleCardLike(card) {
+  const apiLikeMethod = (!card.isLiked()) ? api.likeCard.bind(api) : api.unlikeCard.bind(api);
+  apiLikeMethod(card.getId())
+    .then((cardData) => {
+      card.updateLikes(cardData);
+    })
+    .catch((err) => console.log(`Ошибка обработки лайка: ${err}`))
+}
 
-const cardSection = new Section({
-    renderer: (item, user) => {
-      const card = createCard(item, user);
-      cardSection.addItem(card);
-    }
-  },
-  '.places'
+const createCard = getCardCreator(
+  photoPopup.open.bind(photoPopup),
+  handleCardDeleteConfirmation,
+  handleCardLike
 );
 
 const userInfo = new UserInfo(
-  { 
+  {
     nameSelector: '.profile__name',
     aboutSelector: '.profile__about',
     avatarSelector: '.profile__avatar'
    }
 );
 
-api.getProfileInfo()
-  .then(userData => {
+Promise.all([api.getProfileInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
     userInfo.setUserInfo(userData);
     userInfo.setAvatar(userData);
-    return userData
+    const cardSection = new Section({
+        renderer: (item) => {
+          const card = createCard(item, userData);
+          cardSection.appendItem(card);
+        }
+      },
+      '.places'
+    );
+    cardSection.renderItems(cards);
+    const placePopup = new PopupWithForm(
+      '#place-popup',
+      (cardData) => {
+        placePopup.setButtonText('Создание карточки…');
+        api.createCard(cardData)
+          .then(cardData => {
+            cardSection.prependItem(createCard(cardData, cardData.owner));
+            placePopup.close()
+          })
+          .catch((err) => {console.log(`Не удалось создать карточку: ${err}`)})
+          .finally(() => {
+            placePopup.setButtonText('Создать');
+          });
+      }
+    );
+    placePopup.setEventListeners();
+    const placeFormValidator = new FormValidator(placePopup.form, validationSettings);
+    placeFormValidator.enableValidation();
+    addPlaceButton.addEventListener('click', placePopup.open.bind(placePopup));
   })
-  .then(userData => {
-    api.getInitialCards()
-    .then(cards => {
-      cardSection.renderItems(cards.slice().reverse(), userData)
-    })
-    .catch((err) => {console.log(`Не удалось загрузить карточки: ${err}`)})
-  })
-  .catch((err) => {console.log(`Не удалось получить данные профиля: ${err}`)});
+  .catch((err) => {console.log(`Ошибка получения данных с сервера: ${err}`)})
 
 const profilePopup = new PopupWithForm(
   '#profile-popup',
   (values) => {
-    profilePopup.button.textContent = 'Сохранение…'
+    profilePopup.setButtonText('Сохранение…');
     api.updateProfileInfo(values)
       .then(values => {
         userInfo.setUserInfo(values);
         profilePopup.close();
-        profilePopup.button.textContent = 'Сохранить'
       })
-      .catch((err) => {console.log(`Не удалось обновить профиль: ${err}`)});
+      .catch((err) => {console.log(`Не удалось обновить профиль: ${err}`)})
+      .finally(() => {
+        profilePopup.setButtonText('Сохранить')
+      });
     }
 );
 profilePopup.setEventListeners();
@@ -110,33 +126,20 @@ profileFormValidator.enableValidation();
 const avatarPopup = new PopupWithForm(
   '#avatar-popup',
   (values) => {
-    avatarPopup.button.textContent = 'Сохранение…'
+    avatarPopup.setButtonText('Сохранение…');
     api.changeAvatar(values)
       .then(values => {
         userInfo.setAvatar(values);
         avatarPopup.close();
-        avatarPopup.button.textContent = 'Сохранить'
       })
-      .catch((err) => {console.log(`Не удалось обновить аватар: ${err}`)});
+      .catch((err) => {console.log(`Не удалось обновить аватар: ${err}`)})
+      .finally(() => {
+        avatarPopup.setButtonText('Сохранить');
+      });
   });
 avatarPopup.setEventListeners();
 const avatarFormValidator = new FormValidator(avatarPopup.form, validationSettings);
 avatarFormValidator.enableValidation();
-
-const placePopup = new PopupWithForm(
-  '#place-popup',
-  (cardData) => {
-    placePopup.button.textContent = 'Создание карточки…'
-    api.createCard(cardData)
-      .then(cardData => {
-        cardSection.addItem(createCard(cardData, cardData.owner))
-      })
-      .catch((err) => {console.log(`Не удалось создать карточку: ${err}`)});
-  }
-);
-placePopup.setEventListeners();
-const placeFormValidator = new FormValidator(placePopup.form, validationSettings);
-placeFormValidator.enableValidation();
 
 const handleEditProfileButtonClick = () => {
   const data = userInfo.getUserInfo();
@@ -144,9 +147,11 @@ const handleEditProfileButtonClick = () => {
   profileAboutInput.value = data.about;
   profilePopup.open();
 }
-
 editProfileButton.addEventListener('click', handleEditProfileButtonClick);
 
-addPlaceButton.addEventListener('click', placePopup.open.bind(placePopup));
-
-changeAvatarButon.addEventListener('click', avatarPopup.open.bind(avatarPopup));
+const handleEditAvatarButtonClick = () => {
+  const data = userInfo.getUserInfo();
+  avatarLinkInput.value = data.avatar;
+  avatarPopup.open()
+}
+changeAvatarButon.addEventListener('click', handleEditAvatarButtonClick);

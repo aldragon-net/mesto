@@ -1,11 +1,9 @@
-import Popup from "./Popup.js";
+import PopupWithButton from "./PopupWithButton.js";
 
-export default class PopupWithForm extends Popup {
+export default class PopupWithForm extends PopupWithButton {
   constructor (popupSelector, submitHandler) {
     super(popupSelector);
     this._submitHandler = submitHandler;
-    this.form = this._popupElement.querySelector('.popup__form');
-    this.button = this.form.querySelector('.popup__form-submit');
     this._inputs = this.form.querySelectorAll('.popup__form-input');
   }
 

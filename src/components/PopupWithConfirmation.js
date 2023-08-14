@@ -1,28 +1,20 @@
-import Popup from "./Popup.js";
+import PopupWithButton from "./PopupWithButton.js";
 
-export default class PopupWithConfirmation extends Popup {
+export default class PopupWithConfirmation extends PopupWithButton {
   constructor (popupSelector) {
     super(popupSelector);
-    this.form = this._popupElement.querySelector('.popup__form');
-    this.button = this.form.querySelector('.popup__form-submit');
   }
 
   setEventListeners () {
     super.setEventListeners();
     this.form.addEventListener('submit', (evt) => {
       evt.preventDefault();
-      this._onConfirm();
+      this._handleSubmit();
     })
   }
 
-  setResolvers (onConfirm, onClose) {
-    this._onConfirm = onConfirm;
-    this._onClose = onClose;
-  }
-
-  close () {
-    this._onClose();
-    super.close()
+  setCallback (submitCallback) {
+    this._handleSubmit = submitCallback;
   }
 
 }
