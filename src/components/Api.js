@@ -16,9 +16,6 @@ export default class Api {
         }
         return Promise.reject(`Ошибка запроса: ${res.status}`)
       })
-      .catch((err) => {
-          console.log(err);
-        });
   }
 
   getProfileInfo () {

@@ -30,18 +30,21 @@ export default class Card {
       this._buttonLike.classList.remove('place__like-icon_active')
     }
   }
-  _toggleLike () {
-    this._handleLike(this._id, this._liked)
-      .then((card) => {
-        this._likes = card.likes;
-        this._renderLikes()
-      })
+
+  updateLikes (cardData) {
+    this._likes = cardData.likes;
+    this._renderLikes();
+  }
+
+  deleteCard () {
+    this._element.remove();
+    this._element = null;
   }
 
   _setEventListeners () {
-    this._buttonLike.addEventListener('click', this._toggleLike.bind(this));
+    this._buttonLike.addEventListener('click', (() => this._handleLike(this)));
     if (this._owned) {
-      this._buttonDelete.addEventListener('click', () => {this._handleDelete(this._id, this._element)})
+      this._buttonDelete.addEventListener('click', (() => this._handleDelete(this)))
     } else {
       this._buttonDelete.remove();
     };
@@ -53,6 +56,10 @@ export default class Card {
     this._cardImage.src = this._link;
     this._renderLikes();
     this._cardImage.alt = `фотография места «${this._name}»`;
+  }
+
+  getId () {
+    return this._id;
   }
 
   generateCard () {

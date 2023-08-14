@@ -28,45 +28,34 @@ photoPopup.setEventListeners();
 const confirmationPopup = new PopupWithConfirmation('#confirmation-popup');
 confirmationPopup.setEventListeners();
 
-function confirmDelete(confirmationPopup) {
-  confirmationPopup.button.textContent = "Да"
-  confirmationPopup.open()
-  return new Promise((resolve, reject) => {
-    confirmationPopup.setResolvers(
-      () => {resolve('Confirmed')},
-      () => {reject('Not confrimed')}
-    )
-  })
-}
-
-function handleCardDelete(cardId, element) {
-  confirmDelete(confirmationPopup)
+function handleCardDelete (card) {
+  confirmationPopup.setButtonText('Удаляется…');
+  api.deleteCard(card.getId())
     .then(() => {
-      confirmationPopup.button.textContent = "Удаляется…"
-      return api.deleteCard(cardId)
-    })
-    .then(() => {
-      element.remove();
-      element = null;
       confirmationPopup.close();
+      card.deleteCard();
     })
     .catch((err) => {console.log(`Карточка не удалена: ${err}`)})
+    .finally(() => {
+      confirmationPopup.setButtonText('Да');
+    })
 }
 
-function handleCardLike(cardId, liked) {
-  return !liked ? api.likeCard(cardId) : api.unlikeCard(cardId)
-  }
+function handleCardDeleteConfirmation (card) {
+  confirmationPopup.setCallback(() => handleCardDelete(card));
+  confirmationPopup.open();
+}
 
-const createCard = getCardCreator(photoPopup.open.bind(photoPopup), handleCardDelete, handleCardLike);
+function handleCardLike(card) {
+  const apiLikeMethod = (!card._liked) ? api.likeCard.bind(api) : api.unlikeCard.bind(api);
+  apiLikeMethod(card._id)
+    .then((cardData) => {
+      card.updateLikes(cardData);
+    })
+    .catch((err) => console.log(`Ошибка обработки лайка: ${err}`))
+}
 
-const cardSection = new Section({
-    renderer: (item, user) => {
-      const card = createCard(item, user);
-      cardSection.appendItem(card);
-    }
-  },
-  '.places'
-);
+const createCard = getCardCreator(photoPopup.open.bind(photoPopup), handleCardDeleteConfirmation, handleCardLike);
 
 const userInfo = new UserInfo(
   {
@@ -83,27 +72,54 @@ api.getProfileInfo()
     return userData
   })
   .then(userData => {
+    const cardSection = new Section({
+        renderer: (item) => {
+          const card = createCard(item, userData);
+          cardSection.appendItem(card);
+        }
+      },
+      '.places'
+    );
     api.getInitialCards()
       .then(cards => {
-        cardSection.renderItems(cards, userData)
+        cardSection.renderItems(cards)
       })
       .catch((err) => {console.log(`Не удалось загрузить карточки: ${err}`)})
+    const placePopup = new PopupWithForm(
+      '#place-popup',
+      (cardData) => {
+        placePopup.setButtonText('Создание карточки…');
+        api.createCard(cardData)
+          .then(cardData => {
+            cardSection.prependItem(createCard(cardData, cardData.owner));
+            placePopup.close()
+          })
+          .catch((err) => {console.log(`Не удалось создать карточку: ${err}`)})
+          .finally(() => {
+            placePopup.setButtonText('Создать');
+          });
+      }
+    );
+    placePopup.setEventListeners();
+    const placeFormValidator = new FormValidator(placePopup.form, validationSettings);
+    placeFormValidator.enableValidation();
+    addPlaceButton.addEventListener('click', placePopup.open.bind(placePopup));
   })
   .catch((err) => {console.log(`Не удалось получить данные профиля: ${err}`)});
 
 const profilePopup = new PopupWithForm(
   '#profile-popup',
   (values) => {
-    profilePopup.button.textContent = 'Сохранение…'
+    profilePopup.setButtonText('Сохранение…');
     api.updateProfileInfo(values)
       .then(values => {
         userInfo.setUserInfo(values);
         profilePopup.close();
       })
       .catch((err) => {console.log(`Не удалось обновить профиль: ${err}`)})
-      .finally(() =>
-        profilePopup.button.textContent = 'Сохранить'
-      );
+      .finally(() => {
+        profilePopup.setButtonText('Сохранить')
+      });
     }
 );
 profilePopup.setEventListeners();
@@ -113,7 +129,7 @@ profileFormValidator.enableValidation();
 const avatarPopup = new PopupWithForm(
   '#avatar-popup',
   (values) => {
-    avatarPopup.button.textContent = 'Сохранение…'
+    avatarPopup.setButtonText('Сохранение…');
     api.changeAvatar(values)
       .then(values => {
         userInfo.setAvatar(values);
@@ -121,31 +137,12 @@ const avatarPopup = new PopupWithForm(
       })
       .catch((err) => {console.log(`Не удалось обновить аватар: ${err}`)})
       .finally(() => {
-        avatarPopup.button.textContent = 'Сохранить'
+        avatarPopup.setButtonText('Сохранить');
       });
   });
 avatarPopup.setEventListeners();
 const avatarFormValidator = new FormValidator(avatarPopup.form, validationSettings);
 avatarFormValidator.enableValidation();
-
-const placePopup = new PopupWithForm(
-  '#place-popup',
-  (cardData) => {
-    placePopup.button.textContent = 'Создание карточки…'
-    api.createCard(cardData)
-      .then(cardData => {
-        cardSection.prependItem(createCard(cardData, cardData.owner));
-        placePopup.close()
-      })
-      .catch((err) => {console.log(`Не удалось создать карточку: ${err}`)})
-      .finally(() => {
-        placePopup.button.textContent = 'Создать'
-      });;
-  }
-);
-placePopup.setEventListeners();
-const placeFormValidator = new FormValidator(placePopup.form, validationSettings);
-placeFormValidator.enableValidation();
 
 const handleEditProfileButtonClick = () => {
   const data = userInfo.getUserInfo();
@@ -162,4 +159,3 @@ const handleEditAvatarButtonClick = () => {
 
 editProfileButton.addEventListener('click', handleEditProfileButtonClick);
 changeAvatarButon.addEventListener('click', handleEditAvatarButtonClick);
-addPlaceButton.addEventListener('click', placePopup.open.bind(placePopup));
