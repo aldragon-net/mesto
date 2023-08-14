@@ -1,11 +1,11 @@
 export default class Card {
-  constructor( { name, link, owner, likes, _id }, user, templateSelector, handleCardClick, handleDelete, handleLike) {
+  constructor( { name, link, owner, likes, _id }, currentUserId, templateSelector, handleCardClick, handleDelete, handleLike) {
+    this._id = _id;
     this._name = name;
     this._link = link;
-    this._owned = user._id === owner._id
-    this._id = _id;
+    this._currentUserId = currentUserId;
+    this._owned = currentUserId === owner._id
     this._likes = likes
-    this._user = user;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick
     this._handleDelete = handleDelete;
@@ -22,7 +22,7 @@ export default class Card {
 
   _renderLikes () {
     this._likeCounter.textContent = this._likes.length;
-    this._liked = this._likes.some(user => user._id === this._user._id);
+    this._liked = this._likes.some(user => user._id === this._currentUserId);
     if (this._liked) {
       this._buttonLike.classList.add('place__like-icon_active')
     } else {
@@ -30,8 +30,8 @@ export default class Card {
     }
   }
 
-  updateLikes (cardData) {
-    this._likes = cardData.likes;
+  updateLikes (likes) {
+    this._likes = likes;
     this._renderLikes();
   }
 

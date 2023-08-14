@@ -1,8 +1,14 @@
-import PopupWithButton from "./PopupWithButton.js";
+import Popup from "./Popup.js";
 
-export default class PopupWithConfirmation extends PopupWithButton {
+export default class PopupWithConfirmation extends Popup {
   constructor (popupSelector) {
     super(popupSelector);
+    this.form = this._popupElement.querySelector('.popup__form');
+    this._button = this.form.querySelector('.popup__form-submit');
+  }
+  
+  setButtonText(text) {
+    this._button.textContent = text;
   }
 
   setEventListeners () {
@@ -16,5 +22,4 @@ export default class PopupWithConfirmation extends PopupWithButton {
   setCallback (submitCallback) {
     this._handleSubmit = submitCallback;
   }
-
 }

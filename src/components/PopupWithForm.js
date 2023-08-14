@@ -1,10 +1,12 @@
-import PopupWithButton from "./PopupWithButton.js";
+import Popup from "./Popup.js";
 
-export default class PopupWithForm extends PopupWithButton {
+export default class PopupWithForm extends Popup {
   constructor (popupSelector, submitHandler) {
     super(popupSelector);
-    this._submitHandler = submitHandler;
+    this.form = this._popupElement.querySelector('.popup__form');
+    this._button = this.form.querySelector('.popup__form-submit');
     this._inputs = this.form.querySelectorAll('.popup__form-input');
+    this._submitHandler = submitHandler;
   }
 
   _getInputValues () {
@@ -13,6 +15,10 @@ export default class PopupWithForm extends PopupWithButton {
       inputValues[input.name] = input.value;
     })
     return inputValues;
+  }
+
+  setButtonText(text) {
+    this._button.textContent = text;
   }
 
   setEventListeners () {

@@ -1,10 +1,10 @@
 import Card from "../components/Card.js";
 
 export function getCardCreator (openImage, handleDelete, handleCardLike) {
-  const createCard = (cardData, user) => {
+  const createCard = (cardData, currentUserId) => {
     const card = new Card(
       cardData, 
-      user,
+      currentUserId,
       '#template-place',
       () => {openImage(cardData)},
       handleDelete,
