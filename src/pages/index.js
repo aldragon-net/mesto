@@ -49,11 +49,11 @@ const handleCardDelete = (card) => {
     .finally(() => {
       confirmationPopup.setButtonText('Да');
     })
-}
+};
 const openDeleteConfirmationPopup = (card) => {
   confirmationPopup.setCallback(() => handleCardDelete(card));
   confirmationPopup.open();
-}
+};
 const handleCardLike = (card) => {
   const apiLikeMethod = (!card.isLiked()) ? api.likeCard.bind(api) : api.unlikeCard.bind(api);
   apiLikeMethod(card.getId())
@@ -61,7 +61,7 @@ const handleCardLike = (card) => {
       card.updateLikes(cardData.likes);
     })
     .catch((err) => console.log(`Ошибка обработки лайка: ${err}`))
-}
+};
 const createCard = getCardCreator(
   photoPopup.open.bind(photoPopup),
   openDeleteConfirmationPopup,
@@ -110,7 +110,7 @@ const profilePopup = new PopupWithForm(
       .finally(() => {
         profilePopup.setButtonText('Сохранить')
       });
-    }
+  }
 );
 profilePopup.setEventListeners();
 const profileFormValidator = new FormValidator(profilePopup.form, validationSettings);
@@ -120,7 +120,7 @@ const handleEditProfileButtonClick = () => {
   profileNameInput.value = data.name;
   profileAboutInput.value = data.about;
   profilePopup.open();
-}
+};
 editProfileButton.addEventListener('click', handleEditProfileButtonClick);
 
 const avatarPopup = new PopupWithForm(
@@ -136,7 +136,8 @@ const avatarPopup = new PopupWithForm(
       .finally(() => {
         avatarPopup.setButtonText('Сохранить');
       });
-  });
+  }
+);
 avatarPopup.setEventListeners();
 const avatarFormValidator = new FormValidator(avatarPopup.form, validationSettings);
 avatarFormValidator.enableValidation();
