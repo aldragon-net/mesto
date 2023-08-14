@@ -17,6 +17,10 @@
     margin-top: 45px;
     height: 46px;
   }
+
+  #confirmation-form > .popup__form-submit {
+    margin-top: 16px;
+  }
 }
 
 @media (hover: hover) {
