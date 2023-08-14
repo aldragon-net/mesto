@@ -145,7 +145,7 @@ const handleEditAvatarButtonClick = () => {
   const data = userInfo.getUserInfo();
   avatarLinkInput.value = data.avatar;
   avatarPopup.open()
-}
+};
 changeAvatarButon.addEventListener('click', handleEditAvatarButtonClick);
 
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
