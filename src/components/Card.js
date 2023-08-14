@@ -22,8 +22,7 @@ export default class Card {
 
   _renderLikes () {
     this._likeCounter.textContent = this._likes.length;
-    const likersIds = Array.from(this._likes, user => user._id)
-    this._liked = likersIds.includes(this._user._id);
+    this._liked = this._likes.some(user => user._id === this._user._id);
     if (this._liked) {
       this._buttonLike.classList.add('place__like-icon_active')
     } else {
@@ -59,7 +58,11 @@ export default class Card {
   }
 
   getId () {
-    return this._id;
+    return this._id
+  }
+
+  isLiked () {
+    return this._liked
   }
 
   generateCard () {
